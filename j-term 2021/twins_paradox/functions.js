@@ -196,7 +196,3 @@ function checkIfOnLine(line,coords,origin){
 	return onLine;
 }
 
-function addOne(x){
-	return x+1;
-
-}
