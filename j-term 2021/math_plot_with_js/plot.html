@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p id ="test">Math Plot</p>
+<canvas id="myCanvas" width="200" height="200"
+style="border:1px solid #d3d3d3;">
+Your browser does not support the canvas element.
+</canvas>
+
+
+
+<p>
+<button onclick ="quadratic()">Quadratic</button>
+</p>
+
+<p>
+<button onclick ="plotSin()">Sin</button>
+</p>
+<p>
+<button onclick ="plotGaussian()">Gaussian</button>
+</p>
+
+<p>
+Plot Domain <br>
+x min: <input type = "number", id ="xmin"><br>
+x max: <input type = "number", id ="xmax"><br>
+Click below to apply the change
+</p>
+<button onclick ="applyChnage()">Apply Chnage</button>
+<script src="plotFuncs.js"></script>
+<script src ="plot.js"></script>
+
+</body>
+</html>

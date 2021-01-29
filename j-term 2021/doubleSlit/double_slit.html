@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+               <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+	<h1 style="margin:auto;width:50%">Double Slit Simulator</h1>
+<div style ="display: block; margin: auto; width: 50%;">
+<canvas id="screen" width ="1000" height="200"style="margin-top: 20px;margin-bottom: 20px;">Your browser does not support canvas</canvas>
+
+<div id="tester" style="width:1000px;height:300px;"></div>
+
+
+<p>wavelegth: <input  type = "range" min = "400" max = "700" id = "wavelength"> <p id="waveReading"></p></p>
+<p>distance between two slits: <input  type = "range" min = "20" max = "70" id = "bwSlit"> <p id="slitsReading"></p></p>
+<p>distance to the screen: <input  type = "range" min = "100" max = "200" id = "distWall"> <p id="wallReading"></p></p>
+</div>
+
+ <script src="doubleSlit.js"></script>
+</body>
+</html>

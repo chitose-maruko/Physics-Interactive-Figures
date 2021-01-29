@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+               <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+               <script src="withLib.js"></script>
+</head>
+<body>
+<div id="tester" style="width:50%;height:50%px;"></div>
+<p>
+Plot Domain <br>
+x min: <input type = "number", id ="xmin"><br>
+x max: <input type = "number", id ="xmax"><br>
+Click below to apply the change
+</p>
+<p><button onclick = "chnageRange()">Apply Change</button></p>
+<p><button onclick = "morePoints()">Smoother curve</button></p>
+<p><button onclick = "lessPoints()">Less Smooth</button></p>
+<script>
+	class Sin {
+		constructor(){
+			this.amplitude = 1;//default setting of sine
+			this.phase =0;// value between 0 and 2Pi
+			this.waveNumber = 1;
+			this.angVelocity = 2* Math.PI;
+			this.time =0;
+			}
+			func(x){var wNum = this.waveNumber;
+			var omega = this.angVelocity;
+			var phi = this.phase;
+			var t = this.time;
+			var A = this.amplitude;
+			return A*Math.sin(wNum*x - omega*t + phi);}
+
+			plot(){
+
+			}
+			}
+			
+		
+
+	var crtFunc={funcMath: function(x){return Math.exp(x);}}; //define function here
+	
+	let myPlot = new Plot("tester",crtFunc);
+	myPlot.plot();
+
+
+	function chnageRange(){
+		var xMin =parseFloat(document.getElementById("xmin").value);
+		var xMax =parseFloat(document.getElementById("xmax").value);
+		myPlot.pltDomain = {xmin:xMin,xmax:xMax};
+		myPlot.plot();
+	}
+
+	function morePoints(){
+		myPlot.dataPoints += 10;
+		myPlot.plot();
+	}
+
+	function lessPoints(){
+		if (myPlot.dataPoints>10) {
+			myPlot.dataPoints -= 10;
+		}
+		myPlot.plot();
+	}
+
+	
+		
+</script>
+</body>
+</html>
