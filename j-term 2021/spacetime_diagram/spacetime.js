@@ -2,9 +2,11 @@ var diagram = document.getElementById("diagram");
 var ctx = diagram.getContext("2d");
 var init = {x:200,y:350};
 var mouseDown = false;
+var drawn = false;
 var xpos = 0;
 var ypos =0;
 var selected = document.getElementById("selected");
+var ctxSelected = selected.getContext("2d");
 var axes = document.getElementById("axes");
 var ctxAxes = axes.getContext("2d");
 var  light= document.getElementById("light");
@@ -17,87 +19,137 @@ var  light2= document.getElementById("light2");
 var ctxLight2 = light2.getContext("2d");
 var newAxes = document.getElementById("newAxes");
 var ctxNewAxes = newAxes.getContext("2d");
+var userLine = [[init.y,init.y],[init.x,init.x]];
+var frameR = [[init.y,init.y],[init.x,init.x]];
+var onUserLine = false;
+var onFrameR = false;
+var inFrameR = true;
 
 
 
-drawAxes(ctxAxes,init,axes.width,axes.height);//draw axes
-ctxAxes.font ="25px Arial";
-ctxAxes.fillText("t",init.x-20,20);
-ctxAxes.fillText("x",axes.width -20,init.y-20);
-ctxAxes2.font ="25px Arial";
-ctxAxes2.fillText("t'",init.x-20,20);
-ctxAxes2.fillText("x'",axes.width -20,init.y-20);
+drawAxes(ctxAxes,init,axes.width,axes.height,"x","t");//draw axes
 drawLight(ctxLight);
-drawAxes(ctxAxes2,init,axes2.width,axes2.height);
+drawAxes(ctxAxes2,init,axes2.width,axes2.height,"x'","t'");
 drawLight(ctxLight2);
 
+diagram.addEventListener("mousemove",onMouseMove);
+diagram.addEventListener("mouseup",onMouseUp);
+diagram.addEventListener("mousedown",onMouseDown);
+//diagram.addEventListener("dblclick",onClick);
 
-diagram.onmousedown= function (event){
+
+function onMouseDown(event){
 	mouseDown =true;
 }
 
-diagram.onmousemove = function(event){
+function onMouseMove(event){
+    var xpos = event.pageX -diagram.offsetLeft;
+    var ypos = event.pageY -diagram.offsetTop;
 	if (mouseDown) {
+    var coords = [[init.y,ypos],[init.x,xpos]];
 	diagram.width =diagram.width;
-	xpos = event.pageX -diagram.offsetLeft;
-    ypos = event.pageY -diagram.offsetTop;
-    ctx.strokeStyle="blue";
-    ctx.moveTo(init.x,init.y);
-    ctx.lineTo(xpos,ypos);
-    ctx.stroke();
+    drawLine(coords,ctx,"blue","R'");
     ctx.fillStyle = "blue";
     ctx.fillRect(xpos,ypos,2,2);
-};
+} else if (drawn){
+    var position = [[ypos],[xpos]];
+
+    onUserLine = checkIfOnLine(userLine,position,init);
+    onFrameR = checkIfOnLine(frameR,position,init);
+console.log(onUserLine)
+    if (onFrameR) {
+        ctxSelected.clearRect(0,0,400,400);
+        ctxSelected.beginPath();
+        ctxSelected.lineWidth = 5;
+        ctxSelected.strokeStyle = "red";
+        ctxSelected.moveTo(frameR[1][0],frameR[0][0]);
+        ctxSelected.lineTo(frameR[1][1],frameR[0][1]);
+        ctxSelected.stroke();
+        ctxSelected.closePath();
+
+    } else if (onUserLine) {
+        ctxSelected.clearRect(0,0,400,400);
+        ctxSelected.beginPath();
+        ctxSelected.lineWidth = 5;
+        ctxSelected.strokeStyle = "blue";
+        ctxSelected.moveTo(userLine[1][0],userLine[0][0]);
+        ctxSelected.lineTo(userLine[1][1],userLine[0][1]);
+        ctxSelected.stroke();
+        ctxSelected.closePath();
+}}
 
 	}
 
-diagram.onmouseup=function(event){
+function onMouseUp(event){
 	mouseDown =false;
-	diagram.width = diagram.width;
-    xpos = event.pageX -diagram.offsetLeft;
-    ypos = event.pageY -diagram.offsetTop;
-    
-    ctx.beginPath();
-    ctx.strokeStyle="blue";
-    ctx.moveTo(init.x,init.y);
-    ctx.lineTo(xpos,ypos);
-    ctx.stroke();
-    ctx.closePath();
+    var xpos = event.pageX -selected.offsetLeft;
+    var ypos = event.pageY -selected.offsetTop;
+    var position = [[ypos],[xpos]];
+    var lines =[];
+
+    onUserLine = checkIfOnLine(userLine,position,init);
+    onFrameR = checkIfOnLine(frameR,position,init);
+    if(drawn&&(onUserLine||onFrameR)){if(onUserLine&&inFrameR){
+        ctx.clearRect(0,0,400,400);
+        ctxSelected.clearRect(0,0,400,400);
+        lines =transform(userLine,frameR,ctx,init,"blue","red");
+        frameR=lines[1];
+        userLine=lines[0];
+        inFrameR =false;
+    } else if(onFrameR&& !inFrameR){
+        ctx.clearRect(0,0,400,400);
+        ctxSelected.clearRect(0,0,400,400);
+        lines =transform(frameR,userLine,ctx,init,"red","blue");
+        console.log(lines);
+        frameR =lines[0];
+        userLine=lines[1];
+        inFrameR =true;
+    }
+
+    } else{
+        diagram.width = diagram.width;
+    userLine = [[init.y,ypos],[init.x,xpos]];
+    frameR = [[init.y,ypos],[init.x,init.x]];
+
+    drawLine(userLine,ctx,"blue","R'");
     ctx.fillStyle = "blue";
     ctx.fillRect(xpos-4,ypos-4,8,8);
-    ctx.beginPath();
-    ctx.strokeStyle="red";
-    ctx.moveTo(init.x,init.y);
-    ctx.lineTo(init.x,ypos);
-    ctx.stroke();
-    ctx.closePath();
+    drawLine(frameR,ctx,"red","R");
     ctx.fillStyle = "red";
     ctx.fillRect(196,ypos-4,8,8);
     diagram2.width = diagram2.width;
-    var worldLineA = [[0,init.y-ypos],[0,xpos-init.x]];
-    transform(worldLineA,ctx2,init,newAxes);
+
+    transform(userLine,frameR,ctx2,init,"blue","red");
+    inFrameR =true;
+    drawn = true;
+    }
+	
 }
 
-/*diagram.onmousemove = function(event){
-	
-	var line = [[init.y -200,200+init.y],[400,0]];
-	var xpos = event.pageX -diagram.offsetLeft;
-   	var ypos = event.pageY -diagram.offsetTop;
-    var coords = [xpos,ypos];
-    var ctx= diagram.getContext("2d");
-    var state = false;
-    state = checkIfOnLine(line,coords);
-    console.log(state);
-    if (state) {
-    	ctx.lineWidth = 4;
-    	ctx.strokeStyle = "red";
-    	ctx.moveTo(line[0][0],line[1][0]);
-    	ctx.lineTo(line[0][1],line[1][1]);
-    	ctx.stroke();
+function onClick(){
+    var xpos = event.pageX -selected.offsetLeft;
+    var ypos = event.pageY -selected.offsetTop;
+    var position = [[ypos],[xpos]];
+    var lines =[];
 
-    } else{diagram.width = diagram.width;}
+    onUserLine = checkIfOnLine(userLine,position,init);
+    onFrameR = checkIfOnLine(frameR,position,init);
+    if(onUserLine&&inFrameR){
+        ctx.clearRect(0,0,400,400);
+        lines =transform(userLine,frameR,ctx,init,"blue","red");
+        frameR=lines[1];
+        userLine=lines[0];
+        inFrameR =false;
+    } else if(onFrameR&& !inFrameR){
+        ctx.clearRect(0,0,400,400);
+        lines =transform(frameR,userLine,ctx,init,"red","blue");
+        console.log(lines);
+        frameR =lines[0];
+        userLine=lines[1];
+        inFrameR =true;
+    }
+}
 
-}*/
 
 function drawLight(ctx){
 	ctx.moveTo(0+init.y-200,400);
