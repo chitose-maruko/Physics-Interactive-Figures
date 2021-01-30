@@ -48,19 +48,24 @@ function onMouseMove(event){
 	if (mouseDown) {
     var coords = [[init.y,ypos],[init.x,xpos]];
 	diagram.width =diagram.width;
+    if(inFrameR){
     drawLine(coords,ctx,"blue","R'");
     ctx.fillStyle = "blue";
-    ctx.fillRect(xpos,ypos,2,2);
+} else{
+   drawLine(coords,ctx,"red","R");
+    ctx.fillStyle = "red";
+}
+ ctx.fillRect(xpos,ypos,2,2);
+
 } else if (drawn){
     var position = [[ypos],[xpos]];
 
     onUserLine = checkIfOnLine(userLine,position,init);
     onFrameR = checkIfOnLine(frameR,position,init);
-console.log(onUserLine)
     if (onFrameR) {
         ctxSelected.clearRect(0,0,400,400);
         ctxSelected.beginPath();
-        ctxSelected.lineWidth = 5;
+        ctxSelected.lineWidth = 6;
         ctxSelected.strokeStyle = "red";
         ctxSelected.moveTo(frameR[1][0],frameR[0][0]);
         ctxSelected.lineTo(frameR[1][1],frameR[0][1]);
@@ -70,13 +75,16 @@ console.log(onUserLine)
     } else if (onUserLine) {
         ctxSelected.clearRect(0,0,400,400);
         ctxSelected.beginPath();
-        ctxSelected.lineWidth = 5;
+        ctxSelected.lineWidth = 6;
         ctxSelected.strokeStyle = "blue";
         ctxSelected.moveTo(userLine[1][0],userLine[0][0]);
         ctxSelected.lineTo(userLine[1][1],userLine[0][1]);
         ctxSelected.stroke();
         ctxSelected.closePath();
-}}
+} else{
+    ctxSelected.clearRect(0,0,400,400);
+}
+}
 
 	}
 
@@ -92,6 +100,7 @@ function onMouseUp(event){
     if(drawn&&(onUserLine||onFrameR)){if(onUserLine&&inFrameR){
         ctx.clearRect(0,0,400,400);
         ctxSelected.clearRect(0,0,400,400);
+        drawAxes(ctxAxes,init,axes.width, axes.height,"x'","t'");
         lines =transform(userLine,frameR,ctx,init,"blue","red");
         frameR=lines[1];
         userLine=lines[0];
@@ -99,15 +108,16 @@ function onMouseUp(event){
     } else if(onFrameR&& !inFrameR){
         ctx.clearRect(0,0,400,400);
         ctxSelected.clearRect(0,0,400,400);
+        drawAxes(ctxAxes,init,axes.width, axes.height,"x","t");
         lines =transform(frameR,userLine,ctx,init,"red","blue");
-        console.log(lines);
         frameR =lines[0];
         userLine=lines[1];
         inFrameR =true;
     }
 
     } else{
-        diagram.width = diagram.width;
+        if(inFrameR){
+    ctx.clearRect(0,0,400,400);
     userLine = [[init.y,ypos],[init.x,xpos]];
     frameR = [[init.y,ypos],[init.x,init.x]];
 
@@ -118,10 +128,24 @@ function onMouseUp(event){
     ctx.fillStyle = "red";
     ctx.fillRect(196,ypos-4,8,8);
     diagram2.width = diagram2.width;
-
+    ctxAxes.clearRect(0,0,400,400);
+    drawAxes(ctxAxes,init,axes.width,axes.height,"x","t");
     transform(userLine,frameR,ctx2,init,"blue","red");
-    inFrameR =true;
     drawn = true;
+} else{
+    frameR = [[init.y,ypos],[init.x,xpos]];
+    drawLine(userLine,ctx,"blue","R'");
+    ctx.fillStyle = "blue";
+    ctx.fillRect(userLine[1][1]-4,userLine[0][1]-4,8,8);
+    drawLine(frameR,ctx,"red","R");
+    ctx.fillStyle = "red";
+    ctx.fillRect(xpos-4,ypos-4,8,8);
+    diagram2.width = diagram2.width;
+    ctxAxes.clearRect(0,0,400,400);
+    drawAxes(ctxAxes,init,axes.width,axes.height,"x'","t'");
+    transform(userLine,frameR,ctx2,init,"blue","red");
+}
+
     }
 	
 }
@@ -143,7 +167,6 @@ function onClick(){
     } else if(onFrameR&& !inFrameR){
         ctx.clearRect(0,0,400,400);
         lines =transform(frameR,userLine,ctx,init,"red","blue");
-        console.log(lines);
         frameR =lines[0];
         userLine=lines[1];
         inFrameR =true;
@@ -152,11 +175,36 @@ function onClick(){
 
 
 function drawLight(ctx){
-	ctx.moveTo(0+init.y-200,400);
-	ctx.lineTo(400+init.y-200,0);
+    
+    ctx.beginPath();
+	ctx.moveTo(400,200+init.y);
+	ctx.lineTo(init.x,init.y);
+    ctx.lineTo(400,init.y-200);
+    ctx.lineTo(400,200+init.y);
+    ctx.closePath();
 	ctx.setLineDash([5,3]);
 	ctx.strokeStyle ='red';
 	ctx.stroke(); //draw line of reference for u=c
 	ctx.font="25px Arial";
-	ctx.fillText("c",380,50+init.y-200);
+    ctx.globalAlpha =.4;
+    ctx.fillStyle = "grey";
+    ctx.fill();
+
+    ctx.globalAlpha=1;
+    ctx.fillText("-c",10,50+init.y-200);
+    ctx.fillText("c",380,50+init.y-200);
+    ctx.beginPath();
+    ctx.moveTo(0,200+init.y);
+    ctx.lineTo(init.x,init.y);
+    ctx.lineTo(0,init.y-200);
+    ctx.lineTo(0,200+init.y);
+    ctx.closePath();;
+    ctx.setLineDash([5,3]);
+    ctx.strokeStyle ='red';
+    ctx.stroke(); //draw line of reference for u=c
+   
+    ctx.globalAlpha =.4;
+    ctx.fillStyle = "grey";
+    ctx.fill();
+    
 }

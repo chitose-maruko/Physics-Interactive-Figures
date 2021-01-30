@@ -82,6 +82,7 @@ function transform(line1,line2,ctx,init,color1,color2){
 
 function drawAxes(context,origin,width,height,xLabel,yLabel){
 	//draw x-y axes for the graph
+	context.clearRect(0,0,height,width);
 	context.beginPath();
 	context.strokeStyle ="black";
 	context.lineWidth =1;
