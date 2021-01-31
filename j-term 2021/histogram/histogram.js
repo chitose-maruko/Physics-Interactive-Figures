@@ -64,10 +64,6 @@ var ctxCanvas = canvas.getContext("2d");
 drawHistorgram(result,400,400,ctxCanvas);*/
 
 //test run of the code
-var testSet =[];
-
-for (var i = 0; i < 100; i++) {
-	testSet.push(Math.random()*100);
-}
-let test = new Histogram(testSet,20,"histogram");
+testSet= doubleSlitGenerator(1000,800);
+let test = new Histogram(testSet,100,"histogram");
 test.drawHistorgram();
