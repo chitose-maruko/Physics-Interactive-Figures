@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>animation</title>
+	<link rel="stylesheet" href="animationPractice.css">
+	<script src="pseudoRandomGenerator.js"></script>
+	
+</head>
+<body>
+<div id = "container">
+	<canvas id = "screen" width="600" height="300">your browser does not support canvas</canvas>
+	<div id = "animate">
+	</div>
+	<div id ="slit">
+		<div id ="wallLeft"></div>
+		<div id ="wallMiddle"></div>
+		<div id="wallRight"></div>
+	</div>
+	<img class="bulb" id="bulbOff" src="bulbOff.png">
+	<img class="bulb" id="bulbOn" src ="bulbOn.png">
+<div id="buttonContainer">
+<button onclick="shootOne()">1 Photon</button>
+<button onclick="shootHundred()">100 Photon</button>
+<button onclick="shootOneK()">1000 Photon</button>
+<button onclick="shootTenK()">10,000 Photon</button>
+<button onclick="clearCanvas()">Clear</button>
+</div>
+</div>
+
+
+<script src="animationPractice.js"></script>
+</body>
+</html>

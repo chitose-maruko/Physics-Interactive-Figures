@@ -1,0 +1,77 @@
+#container{
+	width:600px;
+	height:600px;
+	position:relative;
+	margin:auto;
+
+}
+
+#animate{
+	border-radius: 50%;
+	width: 10px;
+    height: 10px;
+    background: #ffff66;
+    border: 1px solid #000;
+    position:absolute;
+    left:295px;
+    bottom:110px;
+    display: none;
+}
+
+.bulb{
+	width:50px;
+	position:absolute;
+	left:275px;
+	bottom: 50px;
+}
+
+#slit{
+	width:600px;
+	height:30px;
+	position: absolute;
+	top: 302px;
+}
+
+#wallLeft{
+	width:250px;
+	height:25px;
+	background: gray;
+	float: left;
+	margin-right: 10px;
+	position: absolute;
+	left:10px;
+
+}
+#wallRight{
+	width:250px;
+	height:25px;
+	background: gray;
+	float: left;
+	margin-left: 10px;
+	position: absolute;
+	right: 10px;
+}
+#wallMiddle{
+	width:40px;
+	height:25px;
+	background: gray;
+	float: left;
+	margin-right: 10px;
+	margin-left: 10px;
+	position: absolute;
+	left:270px;
+
+}
+
+#screen{
+	position: absolute;
+	top:0px;
+	border: solid;
+}
+
+#buttonContainer{
+	position:absolute;
+	bottom: 30px;
+	width:100%;
+	margin:0 auto;
+}
