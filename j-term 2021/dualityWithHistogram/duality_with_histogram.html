@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wave-Particle Duality with histogram</title>
+	<link rel="stylesheet" href="dualityWithHistogram.css">
+	<script src="pseudoRandomGenerator.js"></script>
+	<script src="plotly.js"></script>
+	<script src="withLib.js"></script>
+
+	
+</head>
+<body>
+<h1>Single Photon Interference Simulator</h1>
+<div id = "container">
+<div id="screenContainer">
+	<canvas id = "screen" width="600" height="300">your browser does not support canvas</canvas>
+	<div id="buttonContainer">
+<button onclick="shoot(500)">click</button>
+</div>
+<div id="sliders">
+	<div>wavelegth: <input  type = "range" min = "400" max = "700" id = "wavelength"> <div id="waveReading"></div></div>
+<div>distance between two slits: <input  type = "range" min = "20" max = "70" id = "bwSlit"> <div id="slitsReading"></div></div>
+<div>distance to the screen: <input  type = "range" min = "100" max = "200" id = "distWall"> <div id="wallReading"></div></div>
+</div>
+</div>
+	<div id="plotContainer">
+		<div id="probDensityPlot" width="300"></div>
+	<div id="histogramContainer">
+	<canvas id="histogram" width="300" height="150">your browser does not upport canvas</canvas>
+
+ </div>
+	
+</div>
+
+</div>
+<script src="histogram.js"></script>
+<script src="dualityWithHistogram.js"></script>
+</body>
+</html>

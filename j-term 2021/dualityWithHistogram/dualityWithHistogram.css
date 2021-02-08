@@ -1,0 +1,54 @@
+#probDensityPlot{
+	width:450px;
+	height:200px;
+	float: right;
+}
+
+#plotContainer{
+	width:450px;
+	height: 400px;
+	position:absolute;
+	top:20px;
+	right:20px;
+}
+
+#histogramContainer{
+	border: solid;
+	height: 150px;
+	width: 300px;
+	left:75px;
+	position: absolute;
+	top: 150px;
+}
+
+#screen{
+	border: solid;
+}
+
+#buttonContainer{
+	position:absolute;
+	margin: 20px;
+}
+
+#screenContainer{
+	position: absolute;
+	left:20px;
+	top:20px;
+}
+
+#container{
+	width: 90%;
+	position:relative;
+	margin: auto;
+}
+
+#sliders{
+	position:absolute;
+	top:320px;
+	margin: auto;
+	left:15%;
+}
+
+h1{
+	margin:20px;
+}
