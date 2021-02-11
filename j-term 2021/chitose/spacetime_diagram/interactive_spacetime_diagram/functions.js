@@ -54,7 +54,6 @@ function drawNewAxes(canvas,worldLine){
 	ctx.lineTo(axTipsY[1][2]+200,200-axTipsY[0][2]);
 
 	ctx.stroke();
-	console.log(newAxesX);
 }
 
 function transform(line1,line2,ctx,init,color1,color2){

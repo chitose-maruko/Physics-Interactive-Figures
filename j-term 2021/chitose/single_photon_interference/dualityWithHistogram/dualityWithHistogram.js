@@ -4,18 +4,21 @@ var probDensPlot = document.getElementById('probDensityPlot');
 var bwSlit = document.getElementById('bwSlit');
 var lambda = document.getElementById('wavelength');
 var distWall=document.getElementById('distWall');
+var clear = document.getElementById('clear');
 
 var ctxHistogram = histogram.getContext('2d');
 var ctxScreen = screen.getContext('2d');
-var data = [];
+
+var data = [];//initialize the data used for plotting histogram
 
 let setUp = new DoubleSlit(screen.width);
 var probDensity = {funcMath: function(x){return (setUp.probDensity(x))/2;}};
 
 let plt = new Plot("probDensityPlot", probDensity);
-plt.plot();
+plt.plot();//plot the probability density function.
 
 let hist = new Histogram(data,100,'histogram');
+printNums();
 
 
 function shoot(num){
@@ -38,6 +41,13 @@ function printNums(){
 		document.getElementById("slitsReading").innerHTML = Math.floor(setUp.slitApart*10**(6) )+ "micro meter";
 		document.getElementById("wallReading").innerHTML = setUp.distWall + "m";
 	}
+
+clear.onclick=function(){
+	ctxScreen.clearRect(0,0,600,300);
+	ctxHistogram.clearRect(0,0,300,150);
+	hist.data=[];
+}
+
 
 bwSlit.oninput=function(){
 	hist.data=[];
@@ -73,3 +83,4 @@ plt.func = probDensity;
 plt.plot();
 printNums();
 };
+

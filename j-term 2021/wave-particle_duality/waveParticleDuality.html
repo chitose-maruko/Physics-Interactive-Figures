@@ -1,18 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>histogram</title>
+	<title>single photon interference</title>
 </head>
 <body>
 	<script src="pseudoRandomGenerator.js"></script>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	<script src="withLib.js"></script>
+	<div style="width:70%; margin:0 auto;">
+		<div style="width: 600px; float:left;" >
+			<canvas id = "histogram" width = 600 height=300 style="border: solid; margin:0 auto;">your browser does not support canvas</canvas>
+			
+		</div>
+		
+		<div style="float: left; margin:20px;">
+			<div style=" margin:20px;">
+			<button  onclick="shootOne()"  >shoot one photon</button>
+		</div>
+		<div style="margin:20px;">
+			<button onclick="shootHundred()" >shoot 100 photon</button>
+		</div>
+		<div style=" margin:20px;">
+			<button onclick="shootOneK()">shoot 1,000 photon</button>
+		</div>
+		<div style=" margin:20px;">
+			<button onclick="shootTenK()">shoot 10,000 photon</button>
+		</div>
+		<div style=" margin:20px;">
+			<button onclick="clearCanvas()">clear</button>
+		</div>
+		</div>
+		
+	</div>
+	<div id="plot" style="width: 600px; height:300px; float:left;margin-top:20px; margin-left: 12%; margin-right:12%;" >
 
-	<canvas id = "histogram" width = 800 height=400 style="border: solid;">your browser does not support canvas</canvas>
-	<script src="singlePhotonSimulator.js"></script>
+		</div>
+<script src="singlePhotonSimulator.js"></script>
 
-	<button  onclick="shootOne()">shoot one photon</button>
-	<button onclick="shootHundred()">shoot 100 photon</button>
-	<button onclick="shootOneK()">shoot 1,000 photon</button>
-	<button onclick="shootTenK()">shoot 10,000 photon</button>
-	<button onclick="clearCanvas()">clear</button>
 </body>
 </html>

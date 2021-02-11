@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>histogram</title>
+	<script src="randomVariate.js"></script>
+</head>
+<body>
+
+	<div>
+		<h1>Module: histogram.js and randomVariate.js</h1>
+		<p>
+		The histogram object takes a list of numbers, number of bins and its canvas id for initialization. Then user can draw a histogram with drawHistogram() method.
+		</p>
+
+		<p>
+		The module "randomVariate.js" is used for random variate generation of the data. This page currently produces a set of data according to Gaussian distribution. The module can be used to generate random variate according to any arbitrary probability distributions. To change the distribution, change the mathematical expression inside the function probDensity(x,xMax).<br>
+		Note: the range of distribution used for random variate generation is 0< x < xMax. Make sure to include appropriate terms for horizontal shift in case you are intending to produce a distribution such as one symmetric about x=0.
+		</p>
+	</div>
+
+	<div>
+	<canvas id = "histogram" width = 800 height=400>your browser does not support canvas</canvas>
+	</div>
+<script src="histogram.js"></script>
+</body>
+</html>

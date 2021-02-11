@@ -1,10 +1,5 @@
 var diagram = document.getElementById("diagram");
 var ctx = diagram.getContext("2d");
-var init = {x:200,y:350};
-var mouseDown = false;
-var drawn = false;
-var xpos = 0;
-var ypos =0;
 var selected = document.getElementById("selected");
 var ctxSelected = selected.getContext("2d");
 var axes = document.getElementById("axes");
@@ -19,16 +14,26 @@ var  light2= document.getElementById("light2");
 var ctxLight2 = light2.getContext("2d");
 var newAxes = document.getElementById("newAxes");
 var ctxNewAxes = newAxes.getContext("2d");
-var userLine = [[init.y,init.y],[init.x,init.x]];
-var frameR = [[init.y,init.y],[init.x,init.x]];
-var onUserLine = false;
-var onFrameR = false;
-var inFrameR = true;
+
+var init = {x:200,y:350};//object storing the coordinate of origin on canavas
+var mouseDown = false; //boolean to check if mouse is down ofr not
+var drawn = false; //boolean to check if user has drawn anything on canvas yet
+
+//variables to store mouse position in canavs coordinate
+var xpos = 0;
+var ypos =0; 
+
+var userLine = [[init.y,init.y],[init.x,init.x]];//array to store a line drawn by user
+var frameR = [[init.y,init.y],[init.x,init.x]];//array to store a line in frame R
+
+var onUserLine = false;//boolean to check if mouse is on the line drawn by user
+var onFrameR = false;//boolean to check if mouse is on worldline of frame R.
+var inFrameR = true;//boolean to check if current reference frame for the diagram is frame R
 
 
 
 drawAxes(ctxAxes,init,axes.width,axes.height,"x","t");//draw axes
-drawLight(ctxLight);
+drawLight(ctxLight);//reference line for light
 drawAxes(ctxAxes2,init,axes2.width,axes2.height,"x'","t'");
 drawLight(ctxLight2);
 
@@ -45,45 +50,47 @@ function onMouseDown(event){
 function onMouseMove(event){
     var xpos = event.pageX -diagram.offsetLeft;
     var ypos = event.pageY -diagram.offsetTop;
+
 	if (mouseDown) {
-    var coords = [[init.y,ypos],[init.x,xpos]];
-	diagram.width =diagram.width;
-    if(inFrameR){
-    drawLine(coords,ctx,"blue","R'");
-    ctx.fillStyle = "blue";
-} else{
-   drawLine(coords,ctx,"red","R");
-    ctx.fillStyle = "red";
-}
- ctx.fillRect(xpos,ypos,2,2);
+        var coords = [[init.y,ypos],[init.x,xpos]];//stores the coordinate of a line drawn by user
+    	ctx.clearRect(0,0,diagram.width,diagram.height);
+        if(inFrameR){
+        drawLine(coords,ctx,"blue","R'");//draw world line of frame R'
+        ctx.fillStyle = "blue";
+        } else{
+       drawLine(coords,ctx,"red","R");//draw world line of frame R
+        ctx.fillStyle = "red";
+        }
+     ctx.fillRect(xpos,ypos,2,2);
 
-} else if (drawn){
-    var position = [[ypos],[xpos]];
+    } else if (drawn){
+        var position = [[ypos],[xpos]];
 
-    onUserLine = checkIfOnLine(userLine,position,init);
-    onFrameR = checkIfOnLine(frameR,position,init);
-    if (onFrameR) {
+        onUserLine = checkIfOnLine(userLine,position,init);
+        onFrameR = checkIfOnLine(frameR,position,init);
+
+        if (onFrameR) {
+            ctxSelected.clearRect(0,0,400,400);
+            ctxSelected.beginPath();
+            ctxSelected.lineWidth = 6;
+            ctxSelected.strokeStyle = "red";
+            ctxSelected.moveTo(frameR[1][0],frameR[0][0]);
+            ctxSelected.lineTo(frameR[1][1],frameR[0][1]);
+            ctxSelected.stroke();
+            ctxSelected.closePath();
+
+        } else if (onUserLine) {
+            ctxSelected.clearRect(0,0,400,400);
+            ctxSelected.beginPath();
+            ctxSelected.lineWidth = 6;
+            ctxSelected.strokeStyle = "blue";
+            ctxSelected.moveTo(userLine[1][0],userLine[0][0]);
+            ctxSelected.lineTo(userLine[1][1],userLine[0][1]);
+            ctxSelected.stroke();
+            ctxSelected.closePath();
+    } else{
         ctxSelected.clearRect(0,0,400,400);
-        ctxSelected.beginPath();
-        ctxSelected.lineWidth = 6;
-        ctxSelected.strokeStyle = "red";
-        ctxSelected.moveTo(frameR[1][0],frameR[0][0]);
-        ctxSelected.lineTo(frameR[1][1],frameR[0][1]);
-        ctxSelected.stroke();
-        ctxSelected.closePath();
-
-    } else if (onUserLine) {
-        ctxSelected.clearRect(0,0,400,400);
-        ctxSelected.beginPath();
-        ctxSelected.lineWidth = 6;
-        ctxSelected.strokeStyle = "blue";
-        ctxSelected.moveTo(userLine[1][0],userLine[0][0]);
-        ctxSelected.lineTo(userLine[1][1],userLine[0][1]);
-        ctxSelected.stroke();
-        ctxSelected.closePath();
-} else{
-    ctxSelected.clearRect(0,0,400,400);
-}
+    }
 }
 
 	}
@@ -97,7 +104,9 @@ function onMouseUp(event){
 
     onUserLine = checkIfOnLine(userLine,position,init);
     onFrameR = checkIfOnLine(frameR,position,init);
-    if(drawn&&(onUserLine||onFrameR)){if(onUserLine&&inFrameR){
+    if(drawn&&(onUserLine||onFrameR)){
+        if(onUserLine&&inFrameR){
+            //change reference frame if user clicks world line of frame R'
         ctx.clearRect(0,0,400,400);
         ctxSelected.clearRect(0,0,400,400);
         drawAxes(ctxAxes,init,axes.width, axes.height,"x'","t'");
@@ -106,6 +115,7 @@ function onMouseUp(event){
         userLine=lines[0];
         inFrameR =false;
     } else if(onFrameR&& !inFrameR){
+        //redraw diagramif user clicks world line of frame R.
         ctx.clearRect(0,0,400,400);
         ctxSelected.clearRect(0,0,400,400);
         drawAxes(ctxAxes,init,axes.width, axes.height,"x","t");

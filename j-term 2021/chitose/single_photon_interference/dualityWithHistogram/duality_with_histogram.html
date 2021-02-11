@@ -15,20 +15,32 @@
 <div id="screenContainer">
 	<canvas id = "screen" width="600" height="300">your browser does not support canvas</canvas>
 	<div id="buttonContainer">
-<button onclick="shoot(500)">click</button>
+<button onclick="shoot(500)">Click</button>
+<button id="clear">clear</button>
 </div>
 <div id="sliders">
-	<div>wavelegth: <input  type = "range" min = "400" max = "700" id = "wavelength"> <div id="waveReading"></div></div>
-<div>distance between two slits: <input  type = "range" min = "20" max = "70" id = "bwSlit"> <div id="slitsReading"></div></div>
-<div>distance to the screen: <input  type = "range" min = "100" max = "200" id = "distWall"> <div id="wallReading"></div></div>
+<div>
+	<div class="slider">wavelegth: <input  type = "range" min = "400" max = "700" id = "wavelength"> </div>
+	<div class="reading" id="waveReading"></div>
+</div>
+
+<div>
+<div class="slider">distance between two slits: <input  type = "range" min = "20" max = "70" id = "bwSlit"> </div>
+<div class="reading" id="slitsReading"></div>
+</div>
+<div>
+<div class="slider">distance to the screen: <input  type = "range" min = "100" max = "200" id = "distWall"> </div>
+</div>
+
+<div class="reading" id="wallReading"></div>
 </div>
 </div>
 	<div id="plotContainer">
-		<div id="probDensityPlot" width="300"></div>
-	<div id="histogramContainer">
+		<div id="histogramContainer">
 	<canvas id="histogram" width="300" height="150">your browser does not upport canvas</canvas>
 
  </div>
+		<div id="probDensityPlot" width="300"></div>
 	
 </div>
 

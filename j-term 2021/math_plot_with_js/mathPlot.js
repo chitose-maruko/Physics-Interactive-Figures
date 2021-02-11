@@ -3,8 +3,8 @@ class Plot{
 		// mathematical function to plot (format-> mathFunc = {funcMath: function(){some math function}})
 		this.func = mathFunc; 
 		//defalt canvas setting
-		this.ctx = this.canvas.getContext("2d");
 		this.canvas = document.getElementById(id);
+		this.ctx = this.canvas.getContext("2d");
 		this.canvas.height = 500; //default canvas size
 		this.canvas.width = 500; 
 		
