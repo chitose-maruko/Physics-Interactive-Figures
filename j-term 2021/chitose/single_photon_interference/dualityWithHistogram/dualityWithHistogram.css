@@ -1,52 +1,53 @@
 #probDensityPlot{
 	width:450px;
-	height:200px;
+	height:300px;
 	float: left;
 }
 
 #plotContainer{
 	width:450px;
 	height: 400px;
-	margin: 40px;
 	float:left;
 }
 
 #histogramContainer{
-	border: solid;
-	height: 150px;
+	height: 200px;
 	width: 300px;
 	float: left;
 	margin-left: 75px;
-	margin-bottom: 20px;
+	margin-bottom: 0px;
 
 }
 
 #screen{
 	border: solid;
+	height:250px;
+	width: 600px;
 }
 
 #buttonContainer{
 	position:absolute;
 	margin: 20px;
+	top:340px;
 }
 
 #screenContainer{
 	float:left;
-	margin: 20px;
-	height:380px;
+	margin: 10px;
+	height:470px;
 }
 
 #container{
-	width: 95%;
+	width: 90%;
 	position:relative;
 	margin: auto;
 }
 
 #sliders{
 	position:absolute;
-	top:350px;
-	margin: auto;
-	left:15%;
+	top:365px;
+	margin: 30px;
+	left:5%;
 	
 }
 
@@ -59,4 +60,68 @@ h1{
 }
 .slider{
 	float: left;
+}
+
+#graphTitle{
+	width:100%;
+	text-align: center;
+	font-size: 18px;
+	font-family: Arial;
+	margin: 10px;
+}
+
+.bulb{
+	width:40px;
+	position:absolute;
+	bottom: 0px;
+}
+
+#slit{
+	width:600px;
+	height:30px;
+	position: absolute;
+	top: 263px;
+}
+
+#wallLeft{
+	width:250px;
+	height:25px;
+	background: gray;
+	float: left;
+	margin-right: 10px;
+	position: absolute;
+	left:0px;
+
+}
+#wallRight{
+	width:250px;
+	height:25px;
+	background: gray;
+	float: left;
+	margin-left: 10px;
+	position: absolute;
+	right: -2px;
+}
+#wallMiddle{
+	width:40px;
+	height:25px;
+	background: gray;
+	float: left;
+	margin-right: 10px;
+	margin-left: 10px;
+	position: absolute;
+	left:270px;
+
+}
+
+.h1{
+	margin:10px;
+}
+
+#bulbContainer{
+	position: absolute;
+	left:290px;
+	width:50px;
+	height:60px;
+	top: 300px;
 }

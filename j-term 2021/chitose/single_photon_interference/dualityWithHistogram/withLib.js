@@ -6,7 +6,7 @@ function createList(plotRange,pointsNum,mathFunc){
 	var ylist =[];
 	var x = plotRange.xmin;
 	for (var i = 0; i < pointsNum+1; i++) {
-		xlist.push(x);
+		xlist.push((x/30-10));
 		ylist.push(mathFunc.funcMath(x));
 		x += incr;
 		};
@@ -20,9 +20,35 @@ class Plot{
 		this.pltDomain = {xmin: 0,xmax:600}; //default plot domain
 		this.dataPoints = 1000; //default number of data points for the plot
 		this.myDiv = document.getElementById(id);
+		this.layout={
+					  title: {
+					    text:'Probability Density',
+					    font: {
+					      family: 'Arial',
+					      size: 18
+					    }
+					  },
+					  xaxis: {
+					    title: {
+					      text: 'x  in cm',
+					      font: {
+					        family: 'Arial',
+					        size: 15,
+					      }
+					    },
+					  },
+					  yaxis: {
+					    title: {
+					      text: '$$|\\Psi_{(x)}|^2$$',
+					      font: {
+					        family: 'Arial',
+					        size: 15,
+					      }
+					    }
+					  }
+					};
 	}
 	plot(){var coords = [createList(this.pltDomain,this.dataPoints,this.func)];
-		Plotly.newPlot( this.myDiv, coords, {
-	margin: { t: 0 } } );
+		Plotly.newPlot( this.myDiv, coords,this.layout);
 	}
 }

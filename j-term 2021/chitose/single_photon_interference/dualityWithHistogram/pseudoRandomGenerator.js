@@ -42,7 +42,7 @@ function doubleSlitGenerator(numPoints,width){
 	while(counter <numPoints){
 		xpos = Math.random()*width;
 		ypos = Math.random();
-		if(ypos < doubleSlit(xpos,width)){
+		if(ypos < (doubleSlit(xpos,width))**2){
 			positionsX.push(xpos);
 			counter +=1;
 		}
@@ -54,8 +54,8 @@ function doubleSlitGenerator(numPoints,width){
 class DoubleSlit{
 	constructor(canvasWidth){
 		this.wavelength = 593*10**(-9); //default wavelength in cm
-		this.slitApart = 45*10**(-6);// distance between slits in cm
-		this.distWall = 1.5; //distance to the wall in meter
+		this.slitApart = 65*10**(-8);// distance between slits in cm
+		this.distWall = 3; //distance to the wall in meter
 		this.canvasWidth = canvasWidth;
 	}
 	probDensity(x){
@@ -80,6 +80,7 @@ class DoubleSlit{
 			xpos = Math.random()*this.canvasWidth;
 			ypos = Math.random();
 			if(ypos < this.probDensity(xpos)){
+				
 				positionsX.push(xpos);
 				counter +=1;
 			}

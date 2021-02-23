@@ -4,7 +4,9 @@
 	<title>Wave-Particle Duality with histogram</title>
 	<link rel="stylesheet" href="dualityWithHistogram.css">
 	<script src="pseudoRandomGenerator.js"></script>
-	<script src="plotly.js"></script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
+</script>	<script src="plotly.js"></script>
 	<script src="withLib.js"></script>
 
 	
@@ -12,24 +14,38 @@
 <body>
 <h1>Single Photon Interference Simulator</h1>
 <div id = "container">
-<div id="screenContainer">
-	<canvas id = "screen" width="600" height="300">your browser does not support canvas</canvas>
-	<div id="buttonContainer">
-<button onclick="shoot(500)">Click</button>
-<button id="clear">clear</button>
-</div>
+	<div id="screenContainer">
+		<canvas id = "screen" width="600" height="300">your browser does not support canvas</canvas>
+		<div id ="slit">
+		<div id ="wallLeft"></div>
+		<div id ="wallMiddle"></div>
+		<div id="wallRight"></div>
+	</div>
+	<div id="bulbContainer">
+		<img class="bulb" id="bulbOn" src ="bulbOn.png">
+		<img class="bulb" id="bulbOff" src ="bulbOff.png">
+	</div>
+		<div id="buttonContainer">
+	
+			<button onclick="shoot(500)">Click</button>
+			<button onclick="playAuto()">Auto Play</button>
+			<button onclick="faster()">Speed Up</button>
+			<button onclick="slower()">Slow Down</button>
+			<button onclick="stop()">Pause</button>
+			<button id="clear">clear</button>
+	</div>
 <div id="sliders">
 <div>
-	<div class="slider">wavelegth: <input  type = "range" min = "400" max = "700" id = "wavelength"> </div>
+	<div class="slider">Wavelegth: <input  type = "range" min = "400" max = "700" id = "wavelength"> </div>
 	<div class="reading" id="waveReading"></div>
 </div>
 
 <div>
-<div class="slider">distance between two slits: <input  type = "range" min = "20" max = "70" id = "bwSlit"> </div>
+<div class="slider">Distance between two slits: <input  type = "range" min = "40" max = "99" id = "bwSlit"> </div>
 <div class="reading" id="slitsReading"></div>
 </div>
 <div>
-<div class="slider">distance to the screen: <input  type = "range" min = "100" max = "200" id = "distWall"> </div>
+<div class="slider">Distance to the screen: <input  type = "range" min = "200" max = "400" id = "distWall"> </div>
 </div>
 
 <div class="reading" id="wallReading"></div>
@@ -37,10 +53,11 @@
 </div>
 	<div id="plotContainer">
 		<div id="histogramContainer">
+			<div id="graphTitle"># of Photons Detected v.s. position x</div>
 	<canvas id="histogram" width="300" height="150">your browser does not upport canvas</canvas>
 
  </div>
-		<div id="probDensityPlot" width="300"></div>
+		<div id="probDensityPlot" ></div>
 	
 </div>
 
