@@ -54,7 +54,7 @@ function freqsDistribution(data,numBins){
 function drawHistorgram(sortedSet,height,width,ctx){
 	//takes an array of [range,freqs]
 	var ferqMax = Math.max.apply(null,sortedSet[1]);
-	var unitHeight = .9*height/ferqMax;
+	var unitHeight = .75*height/ferqMax;
 	var unitWidth = .9*width/(sortedSet[1].length);
 	var xpos =.05*width; //initialize the position of x
 
@@ -67,7 +67,8 @@ function drawHistorgram(sortedSet,height,width,ctx){
 		ctx.lineTo(xpos,.95*height);
 		ctx.closePath();
 		ctx.stroke();
-		ctx.fillStyle = "#BEF8F4";
+		ctx.globalAlpha = .8;
+		ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
 		ctx.fill();
 		xpos += unitWidth;
 	}

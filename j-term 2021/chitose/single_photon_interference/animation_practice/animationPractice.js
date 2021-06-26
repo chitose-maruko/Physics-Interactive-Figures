@@ -16,7 +16,7 @@ function myMove(){
 	var posX = 0;//initialize the x coordinate of animated object
 	var time = 0;//time/y-coordinate
 	var id = setInterval(frame,8);
-	var bulbSwith = setTimeout(backToOff,1000);//swithes teh bulb off after 1 sec
+	var bulbSwith = setTimeout(backToOff,1000);//swithes the bulb off after 1 sec
 	bulbOff.style.display="none";
 	bulbOn.style.display ="block";
 	elm.style.display="block";

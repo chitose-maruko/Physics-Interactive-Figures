@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wave-Particle Duality with histogram</title>
+	<link rel="stylesheet" href="dualityWithHistogram.css">
+	<script >
+		function gaussianGenerator(numPoints,width){
+	var counter =0;
+	var xpos =0;
+	var ypos =0;
+	var positions = []
+	while(counter <numPoints){
+		xpos = Math.random()*width;
+		ypos = Math.random();
+		if(ypos < gaussian(xpos,width)){
+			positions.push(xpos);
+			counter +=1;
+		}
+
+	}
+	return positions;
+}
+
+function gaussian(x,width){
+	return Math.exp(-((x-width/2)**2)/8000);
+}
+
+function doubleSlit(x,width){ //probability density of double slit
+	var wavelength= 593*10**(-9); //wavelength in cm
+	var slitApart = 45*10**(-6);// distance between slits in cm
+	var distWall = 1.5; //distance to the wall in meter
+	var scFactor = width/40;
+	var lambda = wavelength;
+	var d = slitApart;
+	var L = distWall;
+	var k = 2*Math.PI*d/L/lambda;
+	var theta = (x-width/2)/L/scFactor;
+	var interference = (Math.cos(k*(x-width/2)/scFactor+1))/2;
+	var diffraction = (Math.sin(theta)/theta)**2;
+	return interference*diffraction;
+	}
+
+function doubleSlitGenerator(numPoints,width){
+	var counter =0;
+	var xpos =0;
+	var ypos =0;
+	var positionsX = [];
+	while(counter <numPoints){
+		xpos = Math.random()*width;
+		ypos = Math.random();
+		if(ypos < (doubleSlit(xpos,width))**2){
+			positionsX.push(xpos);
+			counter +=1;
+		}
+
+	}
+	return positionsX;
+}
+
+class DoubleSlit{
+	constructor(canvasWidth){
+		this.wavelength = 593*10**(-9); //default wavelength in cm
+		this.slitApart = 65*10**(-8);// distance between slits in cm
+		this.distWall = 3; //distance to the wall in meter
+		this.canvasWidth = canvasWidth;
+	}
+	probDensity(x){
+		var lambda = this.wavelength;
+		var d = this.slitApart;
+		var L = this.distWall;
+		var canvasWidth = this.canvasWidth;
+		var scFactor = canvasWidth/40;
+		var k = 2*Math.PI*d/L/lambda;
+		var theta = (x-canvasWidth/2)/L/scFactor;
+		var interference = (Math.cos(k*(x- canvasWidth/2)/scFactor)+1)/2;
+		var diffraction = (Math.sin(theta)/theta)**2;
+		return interference*diffraction;
+	}
+	randomDoubleSlit(numParticles){
+		var counter =0;
+		var xpos =0;
+		var ypos =0;
+		var positionsX = [];
+		
+		while(counter < numParticles){
+			xpos = Math.random()*this.canvasWidth;
+			ypos = Math.random();
+			if(ypos < this.probDensity(xpos)){
+				
+				positionsX.push(xpos);
+				counter +=1;
+			}
+
+		}
+		return positionsX;}
+}
+
+
+	</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
+</script>	
+<script src="plotly-latest.min.js"></script>
+	<script >
+		function createList(plotRange,pointsNum,mathFunc){
+	/*function to create a 2D array of coordinates from given mathematical function and
+	plot Range and smoothness/number of points*/
+	var incr = (plotRange.xmax - plotRange.xmin)/pointsNum; //x intervals for plots
+	var xlist =[];
+	var ylist =[];
+	var x = plotRange.xmin;
+	for (var i = 0; i < pointsNum+1; i++) {
+		xlist.push((x/30-10));
+		ylist.push(mathFunc.funcMath(x));
+		x += incr;
+		};
+	var coordList ={x:xlist,y:ylist};
+	return coordList;
+	};
+
+class Plot{
+	constructor(id,mathFunc){
+		this.func = mathFunc;
+		this.pltDomain = {xmin: 0,xmax:600}; //default plot domain
+		this.dataPoints = 1000; //default number of data points for the plot
+		this.myDiv = document.getElementById(id);
+		this.layout={
+					  title: {
+					    text:'Probability Density',
+					    font: {
+					      family: 'Arial',
+					      size: 18
+					    }
+					  },
+					  xaxis: {
+					    title: {
+					      text: 'x  in cm',
+					      font: {
+					        family: 'Arial',
+					        size: 15,
+					      }
+					    },
+					  },
+					  yaxis: {
+					    title: {
+					      text: '$$|\\Psi_{(x)}|^2$$',
+					      font: {
+					        family: 'Arial',
+					        size: 15,
+					      }
+					    }
+					  }
+					};
+	}
+	plot(){var coords = [createList(this.pltDomain,this.dataPoints,this.func)];
+		Plotly.newPlot( this.myDiv, coords,this.layout);
+	}
+}
+	</script>
+
+	
+</head>
+<body>
+<h1>Single Photon Interference Simulator</h1>
+<div id = "container">
+	<div id="screenContainer">
+		<canvas id = "screen" width="600" height="300">your browser does not support canvas</canvas>
+		<div id ="slit">
+		<div id ="wallLeft"></div>
+		<div id ="wallMiddle"></div>
+		<div id="wallRight"></div>
+	</div>
+	<div id="bulbContainer">
+		<img class="bulb" id="bulbOn" src ="bulbOn.png">
+		<img class="bulb" id="bulbOff" src ="bulbOff.png">
+	</div>
+		<div id="buttonContainer">
+	
+			<button onclick="shoot(500)">Click</button>
+			<button onclick="playAuto()">Auto Play</button>
+			<button onclick="faster()">Speed Up</button>
+			<button onclick="slower()">Slow Down</button>
+			<button onclick="stop()">Pause</button>
+			<button id="clear">clear</button>
+	</div>
+<div id="sliders">
+<div>
+	<div class="slider">Wavelegth: <input  type = "range" min = "400" max = "700" id = "wavelength"> </div>
+	<div class="reading" id="waveReading"></div>
+</div>
+
+<div>
+<div class="slider">Distance between two slits: <input  type = "range" min = "40" max = "99" id = "bwSlit"> </div>
+<div class="reading" id="slitsReading"></div>
+</div>
+<div>
+<div class="slider">Distance to the screen: <input  type = "range" min = "200" max = "400" id = "distWall"> </div>
+</div>
+
+<div class="reading" id="wallReading"></div>
+</div>
+</div>
+	<div id="plotContainer">
+		
+		<div id="histogramContainer">
+	<!--		<div id="graphTitle"># of Photons Detected v.s. position x</div> -->
+	<canvas id="histogram" width="300" height="150">your browser does not upport canvas</canvas>
+
+ </div>
+	
+</div>
+
+</div>
+<script >
+	
+function createList(plotRange,pointsNum,mathFunc){
+	/*function to create a 2D array of coordinates from given mathematical function and
+	plot Range and smoothness/number of points*/
+	var incr = (plotRange.xmax - plotRange.xmin)/pointsNum; //x intervals for plots
+	var xlist =[];
+	var ylist =[];
+	var x = plotRange.xmin;
+	for (var i = 0; i < pointsNum+1; i++) {
+		xlist.push((x/30-10));
+		ylist.push(mathFunc.funcMath(x));
+		x += incr;
+		};
+	var coordList ={x:xlist,y:ylist};
+	return coordList;
+	};
+
+class Plot{
+	constructor(id,mathFunc){
+		this.func = mathFunc;
+		this.pltDomain = {xmin: 0,xmax:600}; //default plot domain
+		this.dataPoints = 1000; //default number of data points for the plot
+		this.myDiv = document.getElementById(id);
+		this.layout={
+					  title: {
+					    text:'Probability Density',
+					    font: {
+					      family: 'Arial',
+					      size: 18
+					    }
+					  },
+					  xaxis: {
+					    title: {
+					      text: 'x  in cm',
+					      font: {
+					        family: 'Arial',
+					        size: 15,
+					      }
+					    },
+					  },
+					  yaxis: {
+					    title: {
+					      text: '$$|\\Psi_{(x)}|^2$$',
+					      font: {
+					        family: 'Arial',
+					        size: 15,
+					      }
+					    }
+					  }
+					};
+	}
+	plot(){var coords = [createList(this.pltDomain,this.dataPoints,this.func)];
+		Plotly.newPlot( this.myDiv, coords,this.layout);
+	}
+}
+</script>
+<script >var initialInterval=400; //initial interval for auto play
+var numBinsForHistogram=100; // number of bins for histogram
+
+var screen = document.getElementById('screen');
+var histogram = document.getElementById('histogram');
+var probDensPlot = document.getElementById('probDensityPlot');
+var bwSlit = document.getElementById('bwSlit');
+var lambda = document.getElementById('wavelength');
+var distWall=document.getElementById('distWall');
+var clear = document.getElementById('clear');
+var bulbOn = document.getElementById('bulbOn');
+bulbOn.style.display ="none";
+var bulbOff = document.getElementById('bulbOff');
+var wallMid = document.getElementById('wallMiddle');
+var wallRight = document.getElementById('wallRight');
+var wallLeft = document.getElementById('wallLeft');
+
+var ctxHistogram = histogram.getContext('2d');
+var ctxScreen = screen.getContext('2d');
+
+var data = [];//initialize the data used for plotting histogram
+
+let setUp = new DoubleSlit(screen.width);
+var probDensity = {funcMath: function(x){return (setUp.probDensity(x))/2;}};
+
+let plt = new Plot("histogramContainer", probDensity);
+plt.plot();//plot the probability density function.
+
+let hist = new Histogram(data,numBinsForHistogram,'histogram');
+printNums();
+hist.drawHist();
+var particleCounter =0;
+
+var play;
+var interval = initialInterval;
+
+
+function playAuto(){
+	play = setInterval(shootAuto,interval);
+	blinking = setInterval(blink,500);
+	
+}
+
+function faster(){
+	if (interval >5) {
+	interval = Math.floor(interval/2);
+		clearInterval(play);
+	play=setInterval(shootAuto,interval);
+}
+}
+
+function slower(){
+	if (interval <400) {
+	interval = Math.floor(interval*2);
+	clearInterval(play);
+	play=setInterval(shootAuto,interval);
+}
+}
+
+function shootAuto(){
+	if (particleCounter<10000) {
+		shoot(1);
+	}}
+
+function shoot(num){
+	// takes number of photons to be shot
+	var setX = setUp.randomDoubleSlit(num);
+	var setY = gaussianGenerator(num,screen.height);
+	for (var i = 0; i < setX.length; i++) {
+		hist.addData(setX[i]);
+
+	}
+	ctxHistogram.clearRect(0,0,300,150);
+	hist.drawHist();
+	ctxScreen.fillStyle ="red";
+	for (var i = 0; i < setX.length; i++) {
+		ctxScreen.fillRect(setX[i],setY[i],1,1);
+}}
+
+function stop(){
+	clearInterval(play);
+	clearInterval(blinking);
+}
+
+function printNums(){
+		document.getElementById("waveReading").innerHTML = Math.floor(setUp.wavelength*10**(9)) + "nm";
+		document.getElementById("slitsReading").innerHTML = Math.floor(setUp.slitApart*10**(9) )+ "nm";
+		document.getElementById("wallReading").innerHTML = setUp.distWall + "m";
+	}
+
+clear.onclick=function(){
+	ctxScreen.clearRect(0,0,600,300);
+	hist.data=[];
+	interval=initialInterval;
+	hist.drawHist();
+	
+}
+
+
+bwSlit.oninput=function(){
+	hist.data=[];
+	ctxHistogram.clearRect(0,0,300,150);
+	ctxScreen.clearRect(0,0,600,300);
+	setUp.slitApart = parseFloat(bwSlit.value)*10**(-8);
+	probDensity = {funcMath: function(x){return (setUp.probDensity(x))/2;}};
+	plt.func = probDensity;
+	plt.plot();
+	wallMid.style.width = parseFloat(bwSlit.value)/65*40 +"px";
+	wallLeft.style.width = 250 + (40 -parseFloat(bwSlit.value)/65*40)/2 +"px";
+	wallRight.style.width = 250 + (40 -parseFloat(bwSlit.value)/65*40)/2 +"px";
+	wallMid.style.left = 290 -parseFloat(bwSlit.value)/65*40/2 +"px";
+	printNums();
+
+	};
+
+lambda.oninput=function(){
+	hist.data=[];
+	ctxHistogram.clearRect(0,0,300,150);
+	ctxScreen.clearRect(0,0,600,300);
+	setUp.wavelength = parseFloat(lambda.value)*10**(-9);
+	probDensity = {funcMath: function(x){return (setUp.probDensity(x))/2;}};
+	plt.func = probDensity;
+	plt.plot();
+	printNums();
+
+	};
+
+distWall.oninput=function(){
+ctxHistogram.clearRect(0,0,300,150);
+hist.data=[];
+ctxScreen.clearRect(0,0,600,300);
+setUp.distWall = parseFloat(distWall.value)/100;
+probDensity = {funcMath: function(x){return (setUp.probDensity(x))/2;}};
+plt.func = probDensity;
+plt.plot();
+printNums();
+};
+
+function blink(){
+	bulbOff.style.display="none";
+	bulbOn.style.display ="block";
+	var back = setTimeout(off,300);
+
+	function off(){
+		bulbOn.style.display ="none";
+		bulbOff.style.display="block";
+		console.log("off");
+	}
+}</script>
+</body>
+</html>

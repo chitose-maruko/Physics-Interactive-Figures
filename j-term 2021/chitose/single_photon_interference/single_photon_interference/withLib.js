@@ -22,7 +22,7 @@ class Plot{
 		this.myDiv = document.getElementById(id);
 		this.layout={
 					  title: {
-					    text:'Probability Density',
+					    text:'Theoretical Plot',
 					    font: {
 					      family: 'Arial',
 					      size: 18
@@ -49,6 +49,6 @@ class Plot{
 					};
 	}
 	plot(){var coords = [createList(this.pltDomain,this.dataPoints,this.func)];
-		Plotly.newPlot( this.myDiv, coords,this.layout);
+		Plotly.newPlot( this.myDiv, coords,this.layout,{displayModeBar: false});
 	}
 }

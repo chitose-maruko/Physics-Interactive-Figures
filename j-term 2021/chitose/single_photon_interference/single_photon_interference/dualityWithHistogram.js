@@ -14,16 +14,28 @@ var bulbOff = document.getElementById('bulbOff');
 var wallMid = document.getElementById('wallMiddle');
 var wallRight = document.getElementById('wallRight');
 var wallLeft = document.getElementById('wallLeft');
+var speedReading = document.getElementById('speedReading');
+var movingWall = document.getElementById('moving');
 
 var ctxHistogram = histogram.getContext('2d');
 var ctxScreen = screen.getContext('2d');
+
+var plotLegend = document.getElementById('plotLegend');
+var ctxLegend = plotLegend.getContext('2d');
+ctxLegend.fillText("# of detected", 30,12);
+ctxLegend.fillText("photons at x", 30,22);
+
+ctxLegend.fillStyle="rgba(255,0,0, 0.5)";
+ctxLegend.fillRect(5,10,20,7);
+
+speedReading.innerHTML=1000/initialInterval;
 
 var data = [];//initialize the data used for plotting histogram
 
 let setUp = new DoubleSlit(screen.width);
 var probDensity = {funcMath: function(x){return (setUp.probDensity(x))/2;}};
 
-let plt = new Plot("probDensityPlot", probDensity);
+let plt = new Plot("histogramContainer", probDensity);
 plt.plot();//plot the probability density function.
 
 let hist = new Histogram(data,numBinsForHistogram,'histogram');
@@ -36,6 +48,7 @@ var interval = initialInterval;
 
 
 function playAuto(){
+	clearInterval(play);
 	play = setInterval(shootAuto,interval);
 	blinking = setInterval(blink,500);
 	
@@ -43,17 +56,19 @@ function playAuto(){
 
 function faster(){
 	if (interval >5) {
-	interval = Math.floor(interval/2);
+	interval = interval/2;
 		clearInterval(play);
 	play=setInterval(shootAuto,interval);
+	speedReading.innerHTML= (1000/interval).toPrecision(3);
 }
 }
 
 function slower(){
 	if (interval <400) {
-	interval = Math.floor(interval*2);
+	interval = interval*2;
 	clearInterval(play);
 	play=setInterval(shootAuto,interval);
+	speedReading.innerHTML= (1000/interval).toPrecision(3);
 }
 }
 
@@ -74,7 +89,7 @@ function shoot(num){
 	hist.drawHist();
 	ctxScreen.fillStyle ="red";
 	for (var i = 0; i < setX.length; i++) {
-		ctxScreen.fillRect(setX[i],setY[i],1,1);
+		ctxScreen.fillRect(setX[i],setY[i],2,2);
 }}
 
 function stop(){
@@ -90,9 +105,10 @@ function printNums(){
 
 clear.onclick=function(){
 	ctxScreen.clearRect(0,0,600,300);
+	ctxHistogram.clearRect(0,0,300,150);
 	hist.data=[];
 	interval=initialInterval;
-	hist.drawHist();
+	speedReading.innerHTML= (1000/interval).toPrecision(3);
 	
 }
 
@@ -105,10 +121,10 @@ bwSlit.oninput=function(){
 	probDensity = {funcMath: function(x){return (setUp.probDensity(x))/2;}};
 	plt.func = probDensity;
 	plt.plot();
-	wallMid.style.width = parseFloat(bwSlit.value)/65*40 +"px";
-	wallLeft.style.width = 250 + (40 -parseFloat(bwSlit.value)/65*40)/2 +"px";
-	wallRight.style.width = 250 + (40 -parseFloat(bwSlit.value)/65*40)/2 +"px";
-	wallMid.style.left = 290 -parseFloat(bwSlit.value)/65*40/2 +"px";
+	wallMid.style.width = parseFloat(bwSlit.value)/65*30 +"px";
+	wallLeft.style.width = 130 + (30 -parseFloat(bwSlit.value)/65*30)/2 +"px";
+	wallRight.style.width = 130 + (30 -parseFloat(bwSlit.value)/65*30)/2 +"px";
+	wallMid.style.left = 145 -parseFloat(bwSlit.value)/65*30/2 +"px";
 	printNums();
 
 	};
@@ -134,6 +150,7 @@ probDensity = {funcMath: function(x){return (setUp.probDensity(x))/2;}};
 plt.func = probDensity;
 plt.plot();
 printNums();
+movingWall.style.top = 20 +(parseFloat(distWall.value)-300)/100*50 +"px";
 };
 
 function blink(){
