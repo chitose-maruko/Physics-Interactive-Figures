@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Interactive spacediagram</title>
+	<script src="mathPlot.js"></script>
+	<script src="functions.js"></script>
+</head>
+<body>
+	<h1>Interactive Spacetime Diagram</h1>
+
+
+	<div style="float:right;">
+<div >
+ <canvas id="axes" width="400" height="400" 
+   style="position: absolute; left: 20px; top: 70px; z-index: 0;"></canvas>
+   <canvas id="selected" width="400" height="400" 
+   style="position: absolute; left: 20px; top: 70px; z-index: 0;"></canvas>
+   <canvas id="light" width="400" height="400" 
+   style="position: absolute; left: 20px; top: 70px; z-index: 0;"></canvas>
+ <canvas id="diagram" width="400" height="400" 
+   style="position: absolute; left: 20px; top: 70px; z-index: 1;border: 1px solid #d3d3d3;"></canvas>
+</div>
+  <div style="display: none;"> 
+   <canvas id="axes2" width="400" height="400" 
+   style="position: absolute; left: 500px; top: 70px; z-index: 0;"></canvas>
+   <canvas id="light2" width="400" height="400" 
+   style="position: absolute; left: 500px; top: 70px; z-index: 0;"></canvas>
+   <canvas id="newAxes" width="400" height="400" 
+   style="position: absolute; left: 500px; top: 70px; z-index: 0;"></canvas>
+ <canvas id="diagram2" width="400" height="400" 
+   style="position: absolute; left: 500px; top: 70px; z-index: 1;border: 1px solid #d3d3d3;"></canvas>
+   
+</div>
+ </div>
+ 
+
+
+<script src="spacetime.js"></script>
+</body>
+</html>

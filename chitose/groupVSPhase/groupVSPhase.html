@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Group Velocity v.s. Phase Velocity</title>
+	<script src="plotFuncs.js"></script>
+</head>
+<body>
+	<h1>Grouo Velocity v.s. Phase Velocity</h1>
+	<div id="container" style="position: relative;">
+		<button onclick="play()">play</button>
+		<button onclick="pause()">pause</button>
+	<div>
+		Wave 1 & Wave2
+		<canvas id="axes1" width="800" height="200" 
+   		style="position: absolute; left: 20px; top: 70px; z-index: 0;"></canvas>
+   		<canvas id="wave1" width="800" height="200" 
+   		style="position: absolute; left: 20px; top: 70px; z-index: 0;"></canvas>
+   		<canvas id="wave2" width="800" height="200" 
+   		style="position: absolute; left: 20px; top: 70px; z-index: 0;"></canvas>
+	</div>
+
+	<div style="position: absolute; top: 230px;">
+		Resultant Wave
+		<canvas id="axes3" width="800" height="200" 
+   		style="position: absolute; left: 20px; top: 70px; z-index: 0;"></canvas>
+   		<canvas id="wave3" width="800" height="200" 
+   		style="position: absolute; left: 20px; top: 70px; z-index: 0;"></canvas>
+	</div>
+	<div style="position: absolute; top: 500px; display: none;">
+		Zoomed out
+		<canvas id="axes4" width="1000" height="200" 
+   		style="position: absolute; left: 20px; top: 70px; z-index: 0;"></canvas>
+   		<canvas id="wave4" width="1000" height="200" 
+   		style="position: absolute; left: 20px; top: 70px; z-index: 0;"></canvas>
+   		<canvas id="window" width="1000" height="200" 
+   		style="position: absolute; left: 20px; top: 70px; z-index: 0;"></canvas>
+	</div>
+	<button onclick="addNewWave()" style="display: none;">add wave</button>
+</div>
+
+</body>
+<script src="groupVSPhase.js"></script>
+</html>

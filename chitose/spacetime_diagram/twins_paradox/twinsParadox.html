@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="functions.js"></script>
+	</head>
+
+	<body>
+		<div>
+		<canvas id="axes" width="400" height="400" 
+	   style="position: absolute; left: 20px; top: 70px; z-index: 0;" ></canvas>
+	   	
+		<canvas id="diagram" width="400" height="400" 
+	   style="position: absolute; left: 20px; top: 70px; z-index: 1;border: 1px solid #d3d3d3;"></canvas>
+
+	   <canvas id="selected" width="400" height="400" 
+	   style="position: absolute; left: 20px; top: 70px; z-index: 0;" ></canvas>
+		</div>
+		<p><button onclick="earthFrame()" style="float: left;">frame R</button></p>
+		<p><button onclick="outgoingFrame()" style="float: left;">frame R'</button></p>
+		<p><button onclick="incomingFrame()" style="float: left;">frame R''</button></p>
+		<script src="twinsParadox.js"></script>
+
+	</body>
+</html>
