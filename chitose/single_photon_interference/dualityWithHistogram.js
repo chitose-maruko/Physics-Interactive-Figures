@@ -45,7 +45,7 @@ var particleCounter =0;
 
 var play;
 var interval = initialInterval;
-
+playAuto();
 
 function playAuto(){
     clearInterval(play);

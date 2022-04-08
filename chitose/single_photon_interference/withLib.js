@@ -31,11 +31,13 @@ class Plot{
 					  xaxis: {
 					    title: {
 					      text: 'x  in cm',
+					      standoff: 10,
 					      font: {
 					        family: 'Arial',
 					        size: 15,
 					      }
 					    },
+					    /*showticklabels: false*/
 					  },
 					  yaxis: {
 					    title: {
@@ -44,7 +46,8 @@ class Plot{
 					        family: 'Arial',
 					        size: 15,
 					      }
-					    }
+					    },
+					    showticklabels: false
 					  }
 					};
 	}
