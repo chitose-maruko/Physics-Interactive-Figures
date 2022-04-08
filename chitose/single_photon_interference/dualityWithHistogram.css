@@ -7,8 +7,9 @@
 #plotContainer{
 	position: relative;
 	width:450px;
-	height: 550px;
+	height: 500px;
 	float:left;
+	margin:auto;
 }
 
 #histogramContainer{
@@ -17,6 +18,7 @@
 	float: left;
 	margin:0px;
 	position: absolute;
+	top:-10px;
 
 }
 
@@ -30,15 +32,15 @@
 #buttonContainer{
 	position:absolute;
 	left: 3%;
-	top:320px;
+	top:310px;
 }
 
 #screenContainer{
 	float:left;
-	margin: 10px;
-	height:450px;
+	margin: 0px;
+	height:500px;
 	position: relative;
-	top: 20px;
+	top: 10px;
 }
 
 #container{
@@ -52,7 +54,7 @@
 
 #sliders{
 	position:absolute;
-	top:360px;
+	top:350px;
 	left:5%;
 	
 }
@@ -138,7 +140,7 @@ h1{
 	position: absolute;
 width:380px;
 height:200px;
-top: 300px;
+top: 270px;
 left: 30px;
 text-align: center;
 }
